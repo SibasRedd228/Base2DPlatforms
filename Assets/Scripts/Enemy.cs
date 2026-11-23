@@ -1,9 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Враг летит вниз с постоянной скоростью. Если его спрайт касается низа уровня,
-/// он миновал корабль: снимается одно сердце, а сам враг исчезает.
-/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class Enemy : MonoBehaviour
 {

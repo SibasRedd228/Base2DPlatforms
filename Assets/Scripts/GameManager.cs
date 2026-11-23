@@ -1,15 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// Спавн врагов по таймеру. Пропущенный враг снимает одно сердце.
-/// Игра останавливается, только когда сердец не остаётся.
-/// </summary>
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    /// <summary>Истина после проигрыша. Скрипты игрока и врагов читают этот флаг.</summary>
     public static bool IsGameOver { get; private set; }
 
     [SerializeField] GameObject enemyPrefab;
@@ -17,7 +12,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] float spawnIntervalMin = 1f;
     [SerializeField] float spawnIntervalMax = 2f;
 
-    // Прямоугольник уровня, а не текущий кадр камеры: камера ездит, правила игры — нет.
     [SerializeField] Vector2 levelMin = new Vector2(-9f, -6f);
     [SerializeField] Vector2 levelMax = new Vector2(9f, 5.5f);
     [SerializeField] bool useLevelBounds = true;
@@ -55,7 +49,6 @@ public class GameManager : MonoBehaviour
             return;
 
         Instance = null;
-        // Play Mode сбрасывает время сам, но явный сброс не оставляет редактор на паузе.
         Time.timeScale = 1f;
     }
 
@@ -97,16 +90,11 @@ public class GameManager : MonoBehaviour
             maxSpawnX = minSpawnX;
 
         float x = Random.Range(minSpawnX, maxSpawnX);
-        // levelMax.y задаёт потолок спавна: враги появляются выше кадра и падают вниз.
         float y = maxY - halfHeight;
 
         Instantiate(enemyPrefab, new Vector3(x, y, 0f), Quaternion.identity);
     }
 
-    /// <summary>
-    /// Враг дошёл до низа уровня. Снимает одно сердце и убирает этого врага у вызывающего кода.
-    /// Game Over только когда сердец не осталось. Без HUD промах сразу заканчивает игру.
-    /// </summary>
     public void MissEnemy()
     {
         if (IsGameOver)
@@ -125,7 +113,6 @@ public class GameManager : MonoBehaviour
             TriggerGameOver();
     }
 
-    /// <summary>Показывает «Game Over» и останавливает симуляцию.</summary>
     public void TriggerGameOver()
     {
         if (IsGameOver)
@@ -142,14 +129,9 @@ public class GameManager : MonoBehaviour
         if (HudView.Instance != null)
             HudView.Instance.SetHearts(0);
 
-        // FixedUpdate и WaitForSeconds останавливаются. Кадр с надписью остаётся на экране.
         Time.timeScale = 0f;
     }
 
-    /// <summary>
-    /// Границы уровня. Спавн, проигрыш и упор корабля в края считаются по ним,
-    /// даже когда камера уехала за прыгнувшим игроком.
-    /// </summary>
     public static bool TryGetViewBounds(out float minX, out float maxX, out float minY, out float maxY)
     {
         if (Instance != null && Instance.useLevelBounds)

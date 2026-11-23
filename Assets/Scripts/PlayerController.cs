@@ -1,11 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Корабль игрока: бег по платформам, прыжок и выстрел вверх с перезарядкой.
-/// Точка выстрела — дочерний FirePoint, поэтому пуля вылетает оттуда, где стоит корабль.
-/// Проект на Input System: клавиши читаются через Keyboard и Mouse.
-/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
@@ -30,7 +25,6 @@ public class PlayerController : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
 
-        // Гравитация включена: по Y корабль стоит на блоках, а не висит в воздухе.
         _body.bodyType = RigidbodyType2D.Dynamic;
         _body.gravityScale = gravityScale;
         _body.linearDamping = 0f;
@@ -82,14 +76,12 @@ public class PlayerController : MonoBehaviour
 
         _jumpPressed = false;
 
-        // На земле гасим остаточную скорость вниз, чтобы корабль не дрожал в полу.
         if (grounded && verticalSpeed < 0f)
             verticalSpeed = 0f;
 
         _body.linearVelocity = new Vector2(_horizontal * moveSpeed, verticalSpeed);
         ClampToLevel();
 
-        // Промах в зазор между блоками роняет корабль ниже уровня. Возвращаем его на старт.
         if (_body.position.y < -9f)
         {
             _body.position = _spawnPoint;
@@ -147,7 +139,6 @@ public class PlayerController : MonoBehaviour
         if (_collider == null)
             return false;
 
-        // Узкая зона сразу под ногами. Слой Ground — только блоки, не враги и не пули.
         Vector2 origin = new Vector2(_collider.bounds.center.x, _collider.bounds.min.y - 0.06f);
         Vector2 size = new Vector2(_collider.bounds.size.x * 0.65f, 0.12f);
         Collider2D hit = Physics2D.OverlapBox(origin, size, 0f, groundMask);

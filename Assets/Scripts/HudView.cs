@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Угловой HUD из спрайтов Kenney: портрет, сердца и счёт сбитых врагов.
-/// </summary>
 public class HudView : MonoBehaviour
 {
     public static HudView Instance { get; private set; }

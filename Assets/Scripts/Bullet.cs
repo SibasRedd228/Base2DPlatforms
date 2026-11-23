@@ -1,9 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Пуля летит вверх. За экраном уничтожается. Попадание в врага снимает обоих.
-/// Коллайдер должен быть триггером: пуля не толкает объекты, только сообщает о контакте.
-/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class Bullet : MonoBehaviour
 {
@@ -33,7 +29,6 @@ public class Bullet : MonoBehaviour
         if (!GameManager.TryGetViewBounds(out _, out _, out _, out float maxY))
             return;
 
-        // Небольшой запас, чтобы пуля успела скрыться, прежде чем её удалят.
         if (transform.position.y > maxY + 1f)
             Destroy(gameObject);
     }

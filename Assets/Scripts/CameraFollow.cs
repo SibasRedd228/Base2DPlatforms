@@ -1,10 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Камера держит в кадре корабль и платформы вокруг него.
-/// Смещение вверх показывает блок, на который предстоит запрыгнуть,
-/// а смещение по скорости показывает кусок уровня впереди по ходу.
-/// </summary>
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] Transform target;
